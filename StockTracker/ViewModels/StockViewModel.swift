@@ -47,6 +47,17 @@ class StockViewModel: ObservableObject {
         favoriteStocks.contains(where: { $0.ticker == stock.ticker })
     }
     
+    func sortedFavorites() -> [Stock] {
+        favoriteStocks.sorted {
+            sortAscending ? $0.price_change_24hrs < $1.price_change_24hrs :
+                            $0.price_change_24hrs > $1.price_change_24hrs
+        }
+    }
+    
+    func toggleSortOrder() {
+        sortAscending.toggle()
+    }
+    
     private func saveFavorites() {
         if let data = try? JSONEncoder().encode(favoriteStocks) {
             UserDefaults.standard.set(data, forKey: persistenceKey)

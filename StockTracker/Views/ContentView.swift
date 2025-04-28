@@ -20,6 +20,11 @@ struct ContentView: View {
                     Label("Stocks", systemImage: "list.bullet")
                 }
             
+            FavoriteListView(viewModel: viewModel)
+                .tabItem {
+                    Label("Favorites", systemImage: "star.fill")
+                }
+            
         }
     }
     
