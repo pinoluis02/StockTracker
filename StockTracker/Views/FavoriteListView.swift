@@ -21,15 +21,8 @@ struct FavoriteListView: View {
                         viewModel.sortAscending ? "Ascending" : "Descending",
                         systemImage: viewModel.sortAscending ? "arrow.up" : "arrow.down"
                        )
-                       .labelStyle(.titleAndIcon)
-                       .font(.subheadline)
-                       .foregroundColor(.accentColor)
-                       .padding(.horizontal, 12)
-                       .padding(.vertical, 6)
-                       .background(Color(.systemGray6))
-                       .cornerRadius(12)
                    }
-                   .padding(.trailing)
+                   .minimalSortButtonStyle()
                    
                    // Favorite Stocks List
                    List {

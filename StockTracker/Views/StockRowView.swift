@@ -44,9 +44,7 @@ struct StockRowView: View {
             }
             .buttonStyle(PlainButtonStyle())
         }
-        .minimalRowPadding()
-        .background(Color(.secondarySystemBackground))
-        .cornerRadius(10)
+        .minimalRowStyle()
     }
 }
 
