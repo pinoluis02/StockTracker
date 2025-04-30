@@ -55,3 +55,13 @@ extension View {
             .cornerRadius(12)
     }
 }
+
+extension View {
+    /// Styles an empty state
+    func minimalEmptyStateStyle() -> some View {
+        self
+            .multilineTextAlignment(.center)
+            .foregroundColor(.secondary)
+            .padding()
+    }
+}
