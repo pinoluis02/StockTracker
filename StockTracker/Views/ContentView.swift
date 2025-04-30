@@ -24,6 +24,13 @@ struct ContentView: View {
                 .tabItem {
                     Label("Favorites", systemImage: "star.fill")
                 }
+            
+            NavigationStack {
+                SettingsView()
+            }
+            .tabItem {
+                Label("Settings", systemImage: "gear")
+            }
         }
     }
     
