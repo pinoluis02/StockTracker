@@ -29,11 +29,24 @@ struct FavoriteListView: View {
                    List {
                        ForEach(viewModel.sortedFavorites()) { stock in
                            StockRowView(stock: stock, isFavorite: viewModel.isFavorite(stock: stock)) {
-                               viewModel.toggleFavorite(for: stock)
+                               withAnimation {
+                                   viewModel.toggleFavorite(for: stock)
+                               }
                            }
+                           .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                               Button(role: .destructive) {
+                                   withAnimation {
+                                       viewModel.toggleFavorite(for: stock)
+                                   }
+                               } label: {
+                                   Label("Unfavorite", systemImage: "star.slash")
+                               }
+                           }
+                           .transition(.slide.combined(with: .opacity))
                        }
                    }
                    .listStyle(PlainListStyle())
+                   .animation(.default, value: viewModel.favoriteStocks)
                }
                .navigationTitle("Favorites")
            }

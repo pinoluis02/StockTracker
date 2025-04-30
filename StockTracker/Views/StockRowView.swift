@@ -34,6 +34,8 @@ struct StockRowView: View {
             Button(action: favoriteAction) {
                 Image(systemName: isFavorite ? "star.fill" : "star")
                     .foregroundColor(isFavorite ? .yellow : .gray)
+                    .scaleEffect(isFavorite ? 1.2 : 1.0)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.5), value: isFavorite)
             }
             .buttonStyle(PlainButtonStyle())
         }
@@ -42,6 +44,17 @@ struct StockRowView: View {
 }
 
 
-//#Preview {
-//    StockRowView()
-//}
+#Preview("Favorited") {
+    StockRowView(
+        stock: Stock(
+            name: "Apple",
+            ticker: "APPL",
+            price: 240.18,
+            price_change_24hrs: 1.43,
+            is_featured: true
+        ),
+        isFavorite: true,
+        favoriteAction: {}
+    )
+    .padding()
+}
