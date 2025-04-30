@@ -61,6 +61,7 @@ struct FavoriteListView: View {
                                 }
                             )
                             .minimalRowStyle()
+                            .listRowSeparator(.hidden)
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button(role: .destructive) {
                                     withAnimation {

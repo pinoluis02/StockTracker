@@ -8,8 +8,12 @@
 import Foundation
 
 
-class StockService {
-    static func fetchStocks() async throws -> [Stock] {
+protocol StockServiceProtocol {
+    func fetchStocks() async throws -> [Stock]
+}
+
+class StockService: StockServiceProtocol {
+    func fetchStocks() async throws -> [Stock] {
         
         try await Task.sleep(nanoseconds: 1_000_000_000) // 1 second delay
         guard let url = Bundle.main.url(forResource: "example_response", withExtension: "json"),

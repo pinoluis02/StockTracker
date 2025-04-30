@@ -51,6 +51,7 @@ struct StockListView: View {
                             }
                         )
                         .minimalRowStyle()
+                        .listRowSeparator(.hidden)
                         .transition(.slide.combined(with: .opacity))
                     }
                 }

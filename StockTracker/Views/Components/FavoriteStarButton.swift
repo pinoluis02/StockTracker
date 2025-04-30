@@ -23,6 +23,9 @@ struct FavoriteStarButton: View {
                 .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isFavorite)
         }
         .buttonStyle(PlainButtonStyle())
+        .accessibilityLabel(isFavorite ? "Unfavorite" : "Mark as favorite")
+        .accessibilityHint("Double-tap to toggle favorite status")
+        .accessibilityAddTraits(.isButton)
     }
 }
 

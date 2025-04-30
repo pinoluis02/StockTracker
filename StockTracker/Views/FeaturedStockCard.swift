@@ -26,6 +26,7 @@ struct FeaturedStockCard: View {
                     .bold()
                 Spacer()
                 FavoriteStarButton(isFavorite: isFavorite, action: favoriteAction)
+                    .accessibilityIdentifier("star-\(stock.ticker)")
             }
         }
         .minimalCardStyle()

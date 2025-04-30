@@ -14,9 +14,14 @@ class StockViewModel: ObservableObject {
     @Published var favoriteStocks: [Stock] = []
     @Published var sortAscending: Bool = true
 
+    private let stockService: StockServiceProtocol
+    private let userDefaults: UserDefaults
     private let persistenceKey = "favoriteStocks"
     
-    init() {
+    init(stockService: StockServiceProtocol = StockService(), userDefaults: UserDefaults = .standard) {
+        self.stockService = stockService
+        self.userDefaults = userDefaults
+        
         Task {
             await fetchStocks()
         }
@@ -25,9 +30,9 @@ class StockViewModel: ObservableObject {
     
     func fetchStocks() async {
         do {
-            let stocks = try await StockService.fetchStocks()
-            DispatchQueue.main.async {
-                self.allStocks = stocks
+            let stocks = try await stockService.fetchStocks()
+            DispatchQueue.main.async { [weak self] in
+                self?.allStocks = stocks
             }
         } catch {
             print("Failed to fetch stocks: \(error.localizedDescription)")
@@ -60,12 +65,12 @@ class StockViewModel: ObservableObject {
     
     private func saveFavorites() {
         if let data = try? JSONEncoder().encode(favoriteStocks) {
-            UserDefaults.standard.set(data, forKey: persistenceKey)
+            self.userDefaults.set(data, forKey: persistenceKey)
         }
     }
     
     private func loadFavorites() {
-        if let data = UserDefaults.standard.data(forKey: persistenceKey),
+        if let data = self.userDefaults.data(forKey: persistenceKey),
            let decoded = try? JSONDecoder().decode([Stock].self, from: data) {
             favoriteStocks = decoded
         }

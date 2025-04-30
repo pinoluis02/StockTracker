@@ -16,6 +16,7 @@ struct StockRowView: View {
     
     var body: some View {
         HStack(spacing: 16) {
+            // Left: Name and ticker
             VStack(alignment: .leading, spacing: 4) {
                 Text(stock.name)
                     .font(.headline)
@@ -27,6 +28,7 @@ struct StockRowView: View {
             
             Spacer()
             
+            // Right: Price and change
             VStack(alignment: .trailing, spacing: 4) {
                 Text("$\(stock.price, specifier: "%.2f")")
                     .font(.headline)
@@ -37,8 +39,12 @@ struct StockRowView: View {
             }
             
             FavoriteStarButton(isFavorite: isFavorite, action: favoriteAction)
+                .accessibilityIdentifier("star-\(stock.ticker)") 
         }
         .minimalRowStyle()
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(stock.name), ticker \(stock.ticker), price \(stock.price), change \(stock.price_change_24hrs) percent")
+        .accessibilityHint("Double-tap the star to mark as favorite")
     }
 }
 
@@ -61,5 +67,7 @@ struct StockRowView: View {
     )
     .preferredColorScheme(.dark)
     .padding()
+    .dynamicTypeSize(.accessibility3)
+    
 }
 
