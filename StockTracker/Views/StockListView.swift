@@ -16,6 +16,8 @@ struct StockListView: View {
             VStack {
                 // Horizontal Featured Stocks
                 if !viewModel.allStocks.filter({ $0.is_featured }).isEmpty {
+                    
+                    SectionLabel(text: "Featured", topPadding: 16)
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
                             ForEach(viewModel.allStocks.filter { $0.is_featured }) { stock in
@@ -32,10 +34,11 @@ struct StockListView: View {
                         }
                         .padding([.horizontal, .top])
                     }
+                    .padding(.bottom, 12)
                 }
                 
-                
                 // Vertical All Stocks
+                SectionLabel(text: "All Stocks", topPadding: 12)
                 List {
                     ForEach(viewModel.allStocks) { stock in
                         StockRowView(
