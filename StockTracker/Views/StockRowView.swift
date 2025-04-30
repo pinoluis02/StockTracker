@@ -36,13 +36,7 @@ struct StockRowView: View {
                     .foregroundColor(stock.price_change_24hrs >= 0 ? .green : .red)
             }
             
-            Button(action: favoriteAction) {
-                Image(systemName: isFavorite ? "star.fill" : "star")
-                    .foregroundColor(isFavorite ? .yellow : .gray)
-                    .scaleEffect(isFavorite ? 1.2 : 1.0)
-                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isFavorite)
-            }
-            .buttonStyle(PlainButtonStyle())
+            FavoriteStarButton(isFavorite: isFavorite, action: favoriteAction)
         }
         .minimalRowStyle()
     }

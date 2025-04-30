@@ -25,11 +25,7 @@ struct FeaturedStockCard: View {
                 Text("$\(stock.price, specifier: "%.2f")")
                     .bold()
                 Spacer()
-                Button(action: favoriteAction) {
-                    Image(systemName: isFavorite ? "star.fill" : "star")
-                        .foregroundColor(isFavorite ? .yellow : .gray)
-                }
-                .buttonStyle(PlainButtonStyle())
+                FavoriteStarButton(isFavorite: isFavorite, action: favoriteAction)
             }
         }
         .minimalCardStyle()
