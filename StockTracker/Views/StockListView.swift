@@ -35,6 +35,7 @@ struct StockListView: View {
                     }
                 }
                 .listStyle(PlainListStyle())
+                .minimalListBackground()
                 .refreshable {
                     await viewModel.fetchStocks()
                 }
@@ -45,6 +46,12 @@ struct StockListView: View {
 }
 
 
-//#Preview {
-//    StockListView()
-//}
+#Preview("Light Mode") {
+    StockListView(viewModel: .mockStockViewModel())
+        .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    StockListView(viewModel: .mockStockViewModel())
+        .preferredColorScheme(.dark)
+}

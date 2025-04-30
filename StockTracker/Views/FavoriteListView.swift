@@ -17,13 +17,19 @@ struct FavoriteListView: View {
                    Button(action: {
                        viewModel.toggleSortOrder()
                    }) {
-                       Text("Sort by Change (\(viewModel.sortAscending ? "Ascending" : "Descending"))")
-                           .font(.subheadline)
-                           .padding()
-                           .background(Color.blue.opacity(0.1))
-                           .cornerRadius(8)
+                       Label(
+                        viewModel.sortAscending ? "Ascending" : "Descending",
+                        systemImage: viewModel.sortAscending ? "arrow.up" : "arrow.down"
+                       )
+                       .labelStyle(.titleAndIcon)
+                       .font(.subheadline)
+                       .foregroundColor(.accentColor)
+                       .padding(.horizontal, 12)
+                       .padding(.vertical, 6)
+                       .background(Color(.systemGray6))
+                       .cornerRadius(12)
                    }
-                   .padding(.top)
+                   .padding(.trailing)
                    
                    // Favorite Stocks List
                    List {
@@ -46,6 +52,7 @@ struct FavoriteListView: View {
                        }
                    }
                    .listStyle(PlainListStyle())
+                   .minimalListBackground()
                    .animation(.default, value: viewModel.favoriteStocks)
                }
                .navigationTitle("Favorites")
@@ -55,11 +62,13 @@ struct FavoriteListView: View {
 
 
 
-#Preview {
-    let mockViewModel = StockViewModel()
-    mockViewModel.favoriteStocks = [
-        Stock(name: "Apple", ticker: "APPL", price: 240.18, price_change_24hrs: 1.43, is_featured: true),
-        Stock(name: "Tesla", ticker: "TSLA", price: 281.95, price_change_24hrs: -8.85, is_featured: true)
-    ]
-    return FavoriteListView(viewModel: mockViewModel)
+#Preview("Light Mode") {
+    FavoriteListView(viewModel: .mockStockViewModel())
+        .preferredColorScheme(.light)
+}
+
+
+#Preview("Dark Mode") {
+    FavoriteListView(viewModel: .mockStockViewModel())
+        .preferredColorScheme(.dark)
 }

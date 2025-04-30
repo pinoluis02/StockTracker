@@ -32,15 +32,28 @@ struct FeaturedStockCard: View {
                 .buttonStyle(PlainButtonStyle())
             }
         }
-        .padding()
+        .minimalCardStyle()
         .frame(width: 160, height: 120)
-        .background(Color(.secondarySystemBackground))
-        .cornerRadius(12)
-        .shadow(radius: 4)
     }
 }
 
 
-//#Preview {
-//    FeaturedStockCard()
-//}
+#Preview("Light Mode") {
+    FeaturedStockCard(
+        stock: .mockStock,
+        isFavorite: true,
+        favoriteAction: {}
+    )
+    .preferredColorScheme(.light)
+    .padding()
+}
+
+#Preview("Dark Mode") {
+    FeaturedStockCard(
+        stock: .mockStock,
+        isFavorite: true,
+        favoriteAction: {}
+    )
+    .preferredColorScheme(.dark)
+    .padding()
+}
