@@ -24,7 +24,6 @@ Carthage/Build/
 *.xcuserstate
 
 # Asset catalogs & Xcode cache
-*.xcassets
 *.DS_Store
 *.swp
 
