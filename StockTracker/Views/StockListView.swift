@@ -35,6 +35,9 @@ struct StockListView: View {
                     }
                 }
                 .listStyle(PlainListStyle())
+                .refreshable {
+                    await viewModel.fetchStocks()
+                }
             }
             .navigationTitle("Stocks")
         }
