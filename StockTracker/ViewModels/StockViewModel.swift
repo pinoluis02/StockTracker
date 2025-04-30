@@ -13,10 +13,13 @@ class StockViewModel: ObservableObject {
     @Published var allStocks: [Stock] = []
     @Published var favoriteStocks: [Stock] = []
     @Published var sortAscending: Bool = true
+    @Published var lastUpdated: Date? = nil
 
     private let stockService: StockServiceProtocol
     private let userDefaults: UserDefaults
     private let persistenceKey = "favoriteStocks"
+    
+    private var pollingTask: Task<Void, Never>?
     
     init(stockService: StockServiceProtocol = StockService(), userDefaults: UserDefaults = .standard) {
         self.stockService = stockService
@@ -28,11 +31,32 @@ class StockViewModel: ObservableObject {
         loadFavorites()
     }
     
+    func startPolling(interval: TimeInterval = 30.0) {
+        pollingTask?.cancel()
+        
+        pollingTask = Task {
+            while !Task.isCancelled {
+                await fetchStocks()
+                try? await Task.sleep(nanoseconds: UInt64(interval * 1_000_000_000))
+            }
+        }
+    }
+    
+    func stopPolling() {
+        pollingTask?.cancel()
+        pollingTask = nil
+    }
+    
+    deinit {
+        stopPolling()
+    }
+    
     func fetchStocks() async {
         do {
             let stocks = try await stockService.fetchStocks()
             DispatchQueue.main.async { [weak self] in
                 self?.allStocks = stocks
+                self?.lastUpdated = Date()
             }
         } catch {
             print("Failed to fetch stocks: \(error.localizedDescription)")

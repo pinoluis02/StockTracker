@@ -32,7 +32,8 @@ enum ThemeOption: String, CaseIterable, Identifiable {
 
 struct SettingsView: View {
     @AppStorage("preferredTheme") private var preferredThemeRaw: String = ThemeOption.system.rawValue
-
+    @AppStorage("enablePolling") private var enablePolling: Bool = true
+    
     private var preferredTheme: ThemeOption {
         get { ThemeOption(rawValue: preferredThemeRaw) ?? .system }
         set { preferredThemeRaw = newValue.rawValue }
@@ -47,6 +48,10 @@ struct SettingsView: View {
                     }
                 }
                 .pickerStyle(.inline)
+            }
+            Section(header: Text("Data Refresh")) {
+                Toggle("Live Updates (Auto-Refresh)", isOn: $enablePolling)
+                    .toggleStyle(.switch)
             }
         }
         .navigationTitle("Settings")

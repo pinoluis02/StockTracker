@@ -10,10 +10,19 @@ import SwiftUI
 
 struct StockListView: View {
     @ObservedObject var viewModel: StockViewModel
+    @AppStorage("enablePolling") private var enablePolling: Bool = true
+
     
     var body: some View {
         NavigationView {
             VStack {
+                if let lastUpdated = viewModel.lastUpdated {
+                    Text("Last updated: \(lastUpdated.formatted(.relative(presentation: .named)))")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal)
+                        .padding(.top)
+                }
                 // Horizontal Featured Stocks
                 if !viewModel.allStocks.filter({ $0.is_featured }).isEmpty {
                     
@@ -63,6 +72,14 @@ struct StockListView: View {
                 }
             }
             .navigationTitle("Stocks")
+        }
+        .onAppear {
+            if enablePolling {
+                viewModel.startPolling()
+            }
+        }
+        .onDisappear {
+            viewModel.stopPolling()
         }
     }
 }
