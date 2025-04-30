@@ -10,7 +10,12 @@ import SwiftUI
 @main
 struct StockTrackerApp: App {
     let persistenceController = PersistenceController.shared
-
+    
+    init() {
+        UITabBar.appearance().isTranslucent = true
+        UITabBar.appearance().backgroundColor = UIColor.systemBackground
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
