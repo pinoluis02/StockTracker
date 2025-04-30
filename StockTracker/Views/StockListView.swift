@@ -12,17 +12,24 @@ struct StockListView: View {
     @ObservedObject var viewModel: StockViewModel
     @AppStorage("enablePolling") private var enablePolling: Bool = true
 
+    private var formattedUpdateTime: String {
+        if let date = viewModel.lastUpdated {
+            return date.formatted(date: .omitted, time: .standard)
+        } else {
+            return "Never"
+        }
+    }
     
     var body: some View {
         NavigationView {
             VStack {
-                if let lastUpdated = viewModel.lastUpdated {
-                    Text("Last updated: \(lastUpdated.formatted(.relative(presentation: .named)))")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .padding(.horizontal)
-                        .padding(.top)
-                }
+                
+                Text("Last updated: \(formattedUpdateTime)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal)
+                    .padding(.top)
+                
                 // Horizontal Featured Stocks
                 if !viewModel.allStocks.filter({ $0.is_featured }).isEmpty {
                     
@@ -80,6 +87,13 @@ struct StockListView: View {
         }
         .onDisappear {
             viewModel.stopPolling()
+        }
+        .onChange(of: enablePolling) { oldValue, newValue in
+            if newValue {
+                viewModel.startPolling()
+            } else {
+                viewModel.stopPolling()
+            }
         }
     }
 }
