@@ -15,6 +15,10 @@ struct Stock: Identifiable, Codable, Equatable {
     let price: Double
     let price_change_24hrs: Double
     let is_featured: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case name, ticker, price, price_change_24hrs, is_featured
+    }
 }
 
 #if DEBUG

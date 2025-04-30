@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-
+@MainActor
 class StockViewModel: ObservableObject {
     @Published var allStocks: [Stock] = []
     @Published var favoriteStocks: [Stock] = []
@@ -31,6 +31,18 @@ class StockViewModel: ObservableObject {
         loadFavorites()
     }
     
+    // Asynchronously fetch stocks and update published properties on the main actor
+    func fetchStocks() async {
+        do {
+            let stocks = try await stockService.fetchStocks()
+            self.allStocks = stocks
+            self.lastUpdated = Date()
+        } catch {
+            print("Failed to fetch stocks: \(error.localizedDescription)")
+        }
+    }
+    
+    // Polling logic: start fetching stocks every 'interval' seconds
     func startPolling(interval: TimeInterval = 30.0) {
         pollingTask?.cancel()
         
@@ -48,21 +60,13 @@ class StockViewModel: ObservableObject {
     }
     
     deinit {
-        stopPolling()
-    }
-    
-    func fetchStocks() async {
-        do {
-            let stocks = try await stockService.fetchStocks()
-            DispatchQueue.main.async { [weak self] in
-                self?.allStocks = stocks
-                self?.lastUpdated = Date()
-            }
-        } catch {
-            print("Failed to fetch stocks: \(error.localizedDescription)")
+        let task = pollingTask
+        Task.detached {
+            task?.cancel()
         }
     }
     
+    // Example functions for toggling favorites and persisting data
     func toggleFavorite(for stock: Stock) {
         if favoriteStocks.contains(where: { $0.ticker == stock.ticker }) {
             favoriteStocks.removeAll { $0.ticker == stock.ticker }
