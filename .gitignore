@@ -1,0 +1,71 @@
+# Xcode
+DerivedData/
+build/
+*.xcworkspace
+xcuserdata/
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+
+# Swift Package Manager
+.swiftpm/
+Packages/
+Package.resolved
+
+# CocoaPods (if ever used)
+Pods/
+Podfile.lock
+
+# Carthage (if ever used)
+Carthage/Build/
+
+# Simulator/device logs
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+
+# Asset catalogs & Xcode cache
+*.xcassets
+*.DS_Store
+*.swp
+
+# Fastlane (if used)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+
+# User data / Secrets
+*.env
+.env.*
+Secrets.swift
+
+# Crash reports
+*.crash
+
+# Core Data SQLite files (if using in simulator only)
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# SwiftPM build cache
+.build/
+
+# Preview snapshots (optional)
+__Snapshots__/
+
+# Logs & backups
+*.log
+*.bak
+
+# Swift Coverage
+*.gcno
+*.profraw
+*.profdata
+
+# XCTest cache
+*.xcresult
+
+# Xcode Cloud
+ci_post_clone.sh
+ci_pre_xcodebuild.sh
+ci_post_xcodebuild.sh
+
