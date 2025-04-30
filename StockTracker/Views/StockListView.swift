@@ -15,27 +15,45 @@ struct StockListView: View {
         NavigationView {
             VStack {
                 // Horizontal Featured Stocks
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(viewModel.allStocks.filter { $0.is_featured }) { stock in
-                            FeaturedStockCard(stock: stock, isFavorite: viewModel.isFavorite(stock: stock)) {
-                                viewModel.toggleFavorite(for: stock)
+                if !viewModel.allStocks.filter({ $0.is_featured }).isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            ForEach(viewModel.allStocks.filter { $0.is_featured }) { stock in
+                                FeaturedStockCard(
+                                    stock: stock,
+                                    isFavorite: viewModel.isFavorite(stock: stock),
+                                    favoriteAction: {
+                                        withAnimation {
+                                            viewModel.toggleFavorite(for: stock)
+                                        }
+                                    }
+                                )
                             }
                         }
+                        .padding([.horizontal, .top])
                     }
-                    .padding()
                 }
+                
                 
                 // Vertical All Stocks
                 List {
                     ForEach(viewModel.allStocks) { stock in
-                        StockRowView(stock: stock, isFavorite: viewModel.isFavorite(stock: stock)) {
-                            viewModel.toggleFavorite(for: stock)
-                        }
+                        StockRowView(
+                            stock: stock,
+                            isFavorite: viewModel.isFavorite(stock: stock),
+                            favoriteAction: {
+                                withAnimation {
+                                    viewModel.toggleFavorite(for: stock)
+                                }
+                            }
+                        )
+                        .minimalRowStyle()
+                        .transition(.slide.combined(with: .opacity))
                     }
                 }
                 .listStyle(PlainListStyle())
                 .minimalListBackground()
+                .animation(.default, value: viewModel.favoriteStocks)
                 .refreshable {
                     await viewModel.fetchStocks()
                 }
